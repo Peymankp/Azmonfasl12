@@ -91,7 +91,6 @@ body.cv #exam{visibility:hidden}
     <div class="big" id="rscore"></div>
     <div class="of" id="rof"></div>
     <div class="of" id="rdate"></div>
-    <button id="copyBtn">کپی نتیجه</button>
   </div>
 </div>
 <div id="toast"></div>
@@ -347,10 +346,6 @@ $('submitBtn').addEventListener('click',()=>{
   const[n,t]=counts();
   if(!confirm((n<t?('هنوز '+fa(t-n)+' سؤال را پاسخ نداده‌اید.\n'):'')+'پس از ثبت نهایی، پاسخ‌ها قابل تغییر نیست. ثبت شود؟'))return;
   finish(false);
-});
-$('copyBtn').addEventListener('click',()=>{
-  const d=state.done,txt='نام: '+d.name+'\nنمره: '+fmt(d.score)+' از '+fa(20)+'\nخروج از صفحه: '+fa(state.leaves)+' بار\n'+(d.when||'');
-  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('کپی شد')).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('کپی شد')}catch(e){}ta.remove()});
 });
 
 /* ---------- deterrents: copy / print / screenshot / leaving the page ---------- */
