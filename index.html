@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>آزمون الکترونیکی ریاضی — فصل ۱ و ۲</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1f26;--muted:#6b7280;--accent:#1d4ed8;--soft:#eef2ff;--bg:#f3f4f6}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:20px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input[type=text]{-webkit-user-select:text;user-select:text}
+.app{max-width:820px;margin:0 auto;padding:14px 10px 30px}
+h1{font-size:1.25rem;margin:4px 0 10px;font-weight:800}
+.panel{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.panel label{display:block;font-weight:700;font-size:.9rem;margin-bottom:6px}
+#name{width:100%;font:inherit;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:1rem}
+.guide{font-size:.88rem;line-height:2.1;color:#374151}
+#timer{position:sticky;top:0;z-index:6;background:#111827;color:#fff;text-align:center;font-weight:800;font-size:1.1rem;padding:8px;border-radius:0 0 12px 12px;margin-bottom:10px;direction:ltr}
+#timer.low{background:#b91c1c}
+.qcard{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.qh{display:flex;gap:10px;align-items:center;padding:8px 12px;background:#fafafa;border-bottom:1px solid #f0f0f0;font-size:.9rem}
+.qh .sc{color:var(--muted);font-size:.82rem}
+.qb{padding:10px 12px;font-size:.97rem;line-height:2.1}
+.qp{font-weight:700;margin-bottom:4px}
+.qe{font-size:1.02rem;font-weight:600;margin:2px 0 6px;direction:ltr;text-align:center}
+.dg{text-align:center;margin:6px 0;overflow-x:auto}
+.dg svg{max-width:100%;height:auto}
+.blk{padding:6px 0;border-top:1px dashed #eceff3}
+.blk:first-of-type{border-top:0}
+.bl{font-weight:800;white-space:nowrap}
+.bar{position:sticky;bottom:0;z-index:5}
+.submit{display:block;width:100%;font:inherit;font-weight:800;font-size:1.05rem;padding:14px;border:0;border-radius:12px;background:var(--accent);color:#fff;cursor:pointer;margin-top:8px}
+.prog{font-size:.82rem;color:var(--muted);text-align:center;margin:4px 0 0;background:var(--bg)}
+#result{display:none;text-align:center;padding:34px 18px}
+#result .nm{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+#result .big{font-size:3.4rem;font-weight:800;color:var(--accent);line-height:1.3}
+#result .of{color:var(--muted);font-size:1rem;margin-bottom:12px}
+#result button{font:inherit;font-weight:700;padding:10px 18px;border-radius:10px;border:1.5px solid #d1d5db;background:#fff;cursor:pointer}
+#toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:9px 18px;border-radius:10px;opacity:0;transition:.3s;font-size:.88rem;pointer-events:none;z-index:30}
+.lns{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:6px 10px;margin:4px 0}
+.ln{display:flex;gap:8px;align-items:center;padding:2px 0}
+.ln .lt{direction:ltr;unicode-bidi:isolate}
+.bt{margin:6px 0 2px}.bt.ltr>span:last-child{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:6px 0 8px}
+.opts.big{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.opt{display:flex;align-items:center;gap:8px;border:1.5px solid #d1d5db;border-radius:11px;padding:8px 10px;cursor:pointer;background:#fff;min-height:46px}
+.opt:has(input:checked){border-color:var(--accent);background:var(--soft);box-shadow:0 0 0 2px #bfdbfe}
+.opt input{width:18px;height:18px;flex:0 0 auto;accent-color:var(--accent)}
+.opt .num{font-weight:800;color:var(--muted);flex:0 0 auto}
+.opt .oc{flex:1;min-width:0;text-align:center;direction:ltr;unicode-bidi:isolate;font-size:1rem}
+.opt .oc svg{max-width:100%;height:auto;display:block}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.86em;line-height:1.15;margin:0 2px;unicode-bidi:isolate}
+.frac>span:first-child{border-bottom:1.2px solid currentColor;padding:0 2px}
+.rad{display:inline-flex;align-items:stretch;direction:ltr;unicode-bidi:isolate;white-space:nowrap;vertical-align:middle;line-height:1.35}
+.rad .rs{display:block;width:.62em;flex-shrink:0;margin-top:1px;margin-inline-end:1px}
+.rad .rs svg.rsv{display:block;width:100%;height:100%;overflow:visible}
+.rad .rc{border-top:1.3px solid currentColor;padding:0 3px 0 1px;margin-top:1px}
+.rad .ri{font-size:.65em;align-self:flex-start;margin-inline-end:-2px}
+#wm{position:fixed;inset:0;pointer-events:none;z-index:10;display:none}
+body.cv #exam{visibility:hidden}
+@media print{body{display:none!important}}
+</style>
+</head>
+<body>
+<div id="wm"></div>
+<div class="app">
+  <h1>آزمون ریاضی — فصل ۱ و ۲ (الکترونیکی)</h1>
+  <div id="intro">
+    <div class="panel">
+      <label for="name">نام و نام‌خانوادگی</label>
+      <input id="name" type="text" autocomplete="off" placeholder="نام خود را بنویسید">
+    </div>
+    <div class="panel"><div class="guide"><b>راهنما:</b>
+      مدت آزمون <b>۵۰ دقیقه</b> است و با زدن دکمهٔ «شروع آزمون» زمان آغاز می‌شود (با بستن یا رفرش صفحه متوقف نمی‌شود). برای هر قسمت فقط یک گزینه را انتخاب کنید. پاسخ‌ها خودکار ذخیره می‌شود و با پایان زمان، آزمون خودکار ثبت می‌شود. کپی، چاپ و رفتن به برنامه یا صفحهٔ دیگر ممکن نیست و ثبت می‌شود. پس از ثبت، فقط نمره نمایش داده می‌شود.
+    </div></div>
+    <button class="submit" id="startBtn">شروع آزمون</button>
+  </div>
+  <div id="exam" style="display:none">
+    <div id="timer">00:00</div>
+    <div id="list"></div>
+    <div class="bar">
+      <div class="prog" id="prog"></div>
+      <button class="submit" id="submitBtn">ثبت نهایی و دیدن نمره</button>
+    </div>
+  </div>
+  <div id="result" class="panel">
+    <div class="nm" id="rname"></div>
+    <div class="of">نمرهٔ شما</div>
+    <div class="big" id="rscore"></div>
+    <div class="of" id="rof"></div>
+    <div class="of" id="rdate"></div>
+    <button id="copyBtn">کپی نتیجه</button>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+/* ---------- helpers ---------- */
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML}
+function richText(s){
+  const e=escapeHtml(s);
+  const end=(t,i,o,c)=>{let d=0;for(let k=i;k<t.length;k++){if(t[k]===o)d++;else if(t[k]===c){d--;if(!d)return k}}return -1};
+  const splitBar=t=>{let d=0;for(let k=0;k<t.length;k++){const ch=t[k];if(ch==='⟦'||ch==='⟪'||ch==='⟨')d++;else if(ch==='⟧'||ch==='⟫'||ch==='⟩')d--;else if(ch==='|'&&d===0)return k}return -1};
+  const conv=t=>{let out='';
+    for(let i=0;i<t.length;i++){const c=t[i];
+      if(c==='⟨'){const k=end(t,i,'⟨','⟩');if(k>0){out+='<sup>'+conv(t.slice(i+1,k))+'</sup>';i=k;continue}}
+      else if(c==='⟪'){const k=end(t,i,'⟪','⟫');if(k>0){
+        let inner=t.slice(i+1,k),idx='';const sc=inner.indexOf(';');
+        if(sc>0&&sc<=6&&!/[&⟪⟦]/.test(inner.slice(0,sc))){idx=inner.slice(0,sc);inner=inner.slice(sc+1)}
+        out+='<span class="rad">'+(idx?'<sup class="ri">'+conv(idx)+'</sup>':'')+'<span class="rs"><svg class="rsv" viewBox="1.75 5 7.5 16.25" preserveAspectRatio="none" aria-hidden="true"><path d="M3 15L4.5 20L8 5H9.25" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rc">'+conv(inner)+'</span></span>';
+        i=k;continue}}
+      else if(c==='⟦'){const k=end(t,i,'⟦','⟧');if(k>0){const inner=t.slice(i+1,k),b=splitBar(inner);
+        if(b>0){out+='<span class="frac"><span>'+conv(inner.slice(0,b))+'</span><span>'+conv(inner.slice(b+1))+'</span></span>';i=k;continue}}}
+      out+=c}
+    return out};
+  return conv(e);
+}
+
+/* ---------- seeded random ---------- */
+let rnd;
+const mulberry=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const R=(a,b)=>a+Math.floor(rnd()*(b-a+1));
+const pick=a=>a[R(0,a.length-1)];
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const FA='۰۱۲۳۴۵۶۷۸۹';
+const fa=x=>String(x).replace(/-(?=\d)/g,'−').replace(/\d/g,d=>FA[d]);
+const L=s=>'\u2066'+s+'\u2069';
+const rad=n=>'⟪'+fa(n)+'⟫';
+const isSq=n=>Number.isInteger(Math.sqrt(n));
+const nsq=(a,b)=>{let n;do n=R(a,b);while(isSq(n));return n};
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+const T=t=>({t});
+const srt=a=>a.slice().sort((x,y)=>x-y);
+const rg=(a,b)=>{const r=[];for(let i=a;i<=b;i++)r.push(i);return r};
+const frac=(n,d)=>{if(n==0)return '۰';const g=gcd(n,d);n/=g;d/=g;return d==1?'۱':'⟦'+fa(n)+'|'+fa(d)+'⟧'};
+const setS=a=>'{'+a.map(fa).join(', ')+'}';
+/* build one MC item: correct option + up to 3 distinct wrong ones, shuffled */
+function mk(id,w,c,ws){
+  const k=o=>o.t||o.s,seen=new Set([k(c)]),wr=[];
+  for(const x of ws){if(!seen.has(k(x))){seen.add(k(x));wr.push(x)}if(wr.length==3)break}
+  const o=sh([c,...wr]);return{id,w,opts:o,ans:String(o.indexOf(c))};
+}
+const trip=a=>a.map(x=>x?'درست':'نادرست').join(' ، ');
+const allT=rg(0,7).map(i=>[!!(i&4),!!(i&2),!!(i&1)]);
+const tripMk=(id,w,tv)=>mk(id,w,T(trip(tv)),sh(allT).map(x=>T(trip(x))));
+const TFQ='درستی یا نادرستی عبارت‌های (الف)، (ب) و (ج) به ترتیب کدام است؟';
+const LB=['الف','ب','ج','د'];
+
+/* number-line drawing */
+const X=v=>167+43*v;
+function nl(sp){
+  let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 60" style="direction:ltr"><line x1="14" y1="32" x2="338" y2="32" stroke="#000" stroke-width="1.4"/><path d="M338,32l-9,-4.5v9zM14,32l9,-4.5v9z" fill="#000"/>';
+  for(let v=-3;v<=3;v++)s+=`<line x1="${X(v)}" y1="27" x2="${X(v)}" y2="37" stroke="#000" stroke-width="1.1"/><text x="${X(v)}" y="54" text-anchor="middle" font-size="13" font-family="Vazirmatn,Tahoma,sans-serif">${fa(v)}</text>`;
+  const a=sp.l==null?26:X(sp.l),b=sp.r==null?326:X(sp.r);
+  s+=`<line x1="${a}" y1="32" x2="${b}" y2="32" stroke="#1d4ed8" stroke-width="4"/>`;
+  const dot=(x,o)=>`<circle cx="${x}" cy="32" r="5" fill="${o?'#fff':'#1d4ed8'}" stroke="#1d4ed8" stroke-width="2"/>`;
+  if(sp.l!=null)s+=dot(a,sp.lo);if(sp.r!=null)s+=dot(b,sp.ro);
+  return s+'</svg>';
+}
+
+/* ---------- question generators ---------- */
+function q1(){
+  const n=R(3,6),k=nsq(2,30),m=R(1,3),pw=2**n;
+  return{n:1,score:2,prompt:'گزینهٔ درست را برای هر قسمت انتخاب کنید:',blocks:[
+    {label:'الف',text:'مجموعهٔ اعداد حسابی را با ...... و مجموعهٔ اعداد حقیقی را با ...... نشان می‌دهیم.',ins:[mk('q1_1',.5,T(L('W ، ℝ')),[T(L('ℚ ، ℕ')),T(L('ℕ ، W')),T(L('ℝ ، W'))])]},
+    {label:'ب',text:'تعداد زیرمجموعه‌های مجموعه‌ای با '+fa(n)+' عضو برابر ...... است.',ins:[mk('q1_2',.5,T(fa(pw)),[T(fa(pw-1)),T(fa(pw*2)),T(fa(2*n)),T(fa(n*n)),T(fa(pw+1))])]},
+    {label:'ج',text:'عدد '+rad(k)+' عددی ...... است.',ins:[mk('q1_3',.5,T('گنگ'),[T('صحیح'),T('گویا'),T('غیرحقیقی')])]},
+    {label:'د',text:'در پرتاب '+(m>1?fa(m)+' سکه':'یک سکه')+' و یک تاس، تعداد کل حالت‌های ممکن ...... است.',ins:[mk('q1_4',.5,T(fa(6*2**m)),[T(fa(6+2**m)),T(fa(6*m)),T('۳۶'),T(fa(5*2**m))])]}]};
+}
+function q2(){
+  const U=rg(0,9),A=srt(sh(U).slice(0,4)),B=srt(sh(U).slice(0,4));
+  const C=srt(rnd()<.5?[...new Set([...B,...sh(U)])].slice(0,6):sh(U).slice(0,6));
+  const x=pick(A),y=rnd()<.5?pick(A):pick(U),k=pick(U);
+  const set2=y==x?[x,pick(U.filter(v=>v!=x))]:[x,y];
+  const t1=[!B.every(v=>C.includes(v)),true,false];
+  const t2=[set2.every(v=>A.includes(v)),C.every(v=>A.includes(v)),C.includes(k)];
+  return{n:2,score:2,prompt:'مجموعه‌های A، B و C را در نظر بگیرید؛ سپس درستی یا نادرستی عبارت‌های زیر را مشخص کنید:',
+    expression:L('A = '+setS(A)+' , B = '+setS(B)+' , C = '+setS(C)),blocks:[
+    {lines:[{label:'الف',text:L('B ⊄ C')},{label:'ب',text:L('∅ ⊆ C')},{label:'ج',text:L(fa(k)+' ⊆ C')}],text:TFQ,ins:[tripMk('q2_5',1,t1)]},
+    {lines:[{label:'الف',text:L(setS(srt(set2))+' ⊆ A')},{label:'ب',text:L('C ⊆ A')},{label:'ج',text:L(fa(k)+' ∈ C')}],text:TFQ,ins:[tripMk('q2_6',1,t2)]}]};
+}
+function q3(){
+  const lo=R(2,4),hi=R(2,4),a=R(2,3),b=R(1,3),p=R(2,3),q=R(2,3);
+  const B=(x,y,f)=>setS(rg(x,y).map(f));
+  return{n:3,score:2,prompt:'مجموعه‌های زیر را با عضوهایشان مشخص کنید و گزینهٔ درست را انتخاب کنید:',blocks:[
+    {label:'الف',text:L('A = {x | x ∈ ℤ , '+fa(-lo)+' < x ≤ '+fa(hi)+'}'),ltr:true,ins:[mk('q3_7',1,T(L(setS(rg(-lo+1,hi)))),[T(L(setS(rg(-lo,hi)))),T(L(setS(rg(-lo+1,hi-1)))),T(L(setS(rg(-lo,hi-1))))])]},
+    {label:'ب',text:L('B = {'+fa(a)+'k + '+fa(b)+' | k ∈ ℤ , '+fa(-p)+' ≤ k ≤ '+fa(q)+'}'),ltr:true,ins:[mk('q3_8',1,T(L(B(-p,q,k=>a*k+b))),[T(L(B(-p,q+1,k=>a*k+b))),T(L(B(-p-1,q,k=>a*k+b))),T(L(B(-p,q,k=>a*k))),T(L(B(-p,q,k=>a*k-b))),T(L(B(-p,q,k=>k+b)))])]}]};
+}
+function q4(){
+  const nums=sh(rg(1,19)),ao=nums.slice(0,2),both=nums.slice(2,4),bo=nums.slice(4,4+R(3,4));
+  const tx=(x,y,t)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="14" font-family="Vazirmatn,Tahoma,sans-serif">${fa(t)}</text>`;
+  const ci=c=>`<circle cx="${c}" cy="98" r="72" fill="none" stroke="#1d4ed8" stroke-width="1.6"/>`;
+  const bp=[[214,101],[214,125],[214,77],[242,109]];
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200" style="direction:ltr">'+ci(112)+ci(188)+
+    '<text x="40" y="30" font-size="15" font-weight="700">A</text><text x="250" y="30" font-size="15" font-weight="700">B</text>'+
+    ao.map((n,i)=>tx(86,101+24*i,n)).join('')+both.map((n,i)=>tx(150,101+24*i,n)).join('')+bo.map((n,i)=>tx(bp[i][0],bp[i][1],n)).join('')+'</svg>';
+  const f1=rnd()<.5,f2=rnd()<.5,f3=rnd()<.5,N=ao.length+both.length+bo.length;
+  const s1=f1?srt([both[0],pick([...ao,...bo])]):srt(both),s2=f2?srt([...ao,both[0]]):srt(ao),s3=f3?N+pick([-1,1]):N;
+  return{n:4,score:1.5,prompt:'با توجه به نمودار زیر، درستی یا نادرستی عبارت‌های زیر را مشخص کنید:',svg,blocks:[
+    {lines:[{label:'الف',text:L('A ∩ B = '+setS(s1))},{label:'ب',text:L('A − B = '+setS(s2))},{label:'ج',text:L('n(A ∪ B) = '+fa(s3))}],text:TFQ,ins:[tripMk('q4_9',1.5,[!f1,!f2,!f3])]}]};
+}
+function q5(){
+  const pool=rg(0,6).map(n=>T(frac(n,6))),P=n=>mk;
+  const kk=R(3,6),m=pick([4,6,8,9,10,12]),dv=rg(1,6).filter(x=>m%x==0).length;
+  const it=(id,n)=>mk(id,.5,T(frac(n,6)),sh(pool));
+  return{n:5,score:2,prompt:'اگر تاسی را بیندازیم، چقدر احتمال دارد:',blocks:[
+    {label:'الف',text:'عدد رو شده از '+fa(kk)+' بزرگ‌تر باشد',ins:[it('q5_10',6-kk)]},
+    {label:'ب',text:'عدد رو شده یکی از مقسوم‌علیه‌های '+fa(m)+' باشد',ins:[it('q5_11',dv)]},
+    {label:'ج',text:'عدد رو شده مرکّب باشد',ins:[it('q5_12',2)]},
+    {label:'د',text:'عدد رو شده فرد باشد',ins:[it('q5_13',3)]}]};
+}
+function q6(){
+  const a=nsq(5,13);let b;do b=a+R(7,10);while(isSq(b));
+  const inn=rg(a+1,b-1).filter(v=>!isSq(v)),sq=rg(a+1,b-1).filter(isSq);
+  const s=srt(sh(inn).slice(0,3));
+  const f=l=>T(L(l.map(rad).join(' ، ')));
+  const ws=[f([a,s[0],s[1]]),f([a-1,s[0],s[2]]),f([s[0],s[1],b]),...(sq.length?[f(srt([s[0],sq[0],s[1]]))]:[]),f([a-2,s[1],s[2]])];
+  return{n:6,score:1.5,prompt:'بین '+rad(a)+' و '+rad(b)+' سه عدد گنگ قرار دارد. کدام گزینه سه عدد گنگ درست را نشان می‌دهد؟',blocks:[{ins:[mk('q6_14',1.5,f(s),ws)]}]};
+}
+function q7(){
+  const [n1,d1,n2,d2]=pick([[2,5,2,3],[1,4,1,2],[1,3,3,4],[1,5,1,3],[3,8,1,2],[2,7,3,5],[1,6,1,3]]);
+  const D=d1*d2*2,lo=n1*D/d1,hi=n2*D/d2,s=srt(sh(rg(lo+1,hi-1)).slice(0,3));
+  const f=l=>T(l.map(n=>frac(n,D)).join(' ، '));
+  const fx=(n,d)=>50+340*n/d;
+  const pt=(n,d)=>{const x=fx(n,d);return `<circle cx="${x}" cy="66" r="4.5" fill="#dc2626"/><text x="${x}" y="26" text-anchor="middle" font-size="15" font-family="Vazirmatn,Tahoma,sans-serif">${fa(n)}</text><line x1="${x-9}" y1="31" x2="${x+9}" y2="31" stroke="#000" stroke-width="1.2"/><text x="${x}" y="47" text-anchor="middle" font-size="15" font-family="Vazirmatn,Tahoma,sans-serif">${fa(d)}</text>`};
+  const tk=(x,t)=>`<line x1="${x}" y1="61" x2="${x}" y2="71" stroke="#000" stroke-width="1.2"/><text x="${x}" y="89" text-anchor="middle" font-size="14" font-family="Vazirmatn,Tahoma,sans-serif">${t}</text>`;
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="440" height="98" viewBox="0 0 440 98" style="direction:ltr"><line x1="14" y1="66" x2="426" y2="66" stroke="#000" stroke-width="1.4"/><path d="M426,66l-9,-4.5v9zM14,66l9,-4.5v9z" fill="#000"/>'+tk(50,'۰')+tk(390,'۱')+pt(n1,d1)+pt(n2,d2)+'</svg>';
+  return{n:7,score:1.5,prompt:'بین '+frac(n1,d1)+' و '+frac(n2,d2)+' سه کسر قرار دارد. کدام گزینه سه کسر درست را نشان می‌دهد؟',svg,
+    blocks:[{ins:[mk('q7_15',1.5,f(s),[f([lo,s[0],s[1]]),f([s[0],s[1],hi]),f([lo-1,s[0],s[1]]),f([s[1],s[2],hi+1])])]}]};
+}
+function q8(){
+  const c=R(-2,1),lo=R(-3,-1),hi=R(0,2),p=R(-2,0),q=R(1,3);
+  const iv=(l,h,s1,s2)=>T(L('B = {x ∈ ℝ | '+fa(l)+' '+s1+' x '+s2+' '+fa(h)+'}'));
+  const S=o=>({s:nl(o)});
+  return{n:8,score:1.5,prompt:'مجموعه‌های زیر را با محور اعداد مقایسه کنید و گزینهٔ درست را برای هر قسمت انتخاب کنید:',blocks:[
+    {label:'الف',text:'کدام نمودار، مجموعهٔ '+L('A = {x ∈ ℝ | x < '+fa(c)+'}')+' را نشان می‌دهد؟',ins:[mk('q8_16',.5,S({l:null,r:c,ro:true}),[S({l:null,r:c-1,ro:true}),S({l:null,r:c+1,ro:true}),S({l:c,r:null,lo:true}),S({l:null,r:c,ro:false})])]},
+    {label:'ب',text:'با توجه به محور زیر، مجموعهٔ B کدام است؟',svg:nl({l:lo,r:hi,lo:false,ro:false}),ins:[mk('q8_17',.5,iv(lo,hi,'≤','≤'),[iv(lo,hi+1,'≤','≤'),iv(lo+1,hi,'≤','≤'),iv(lo,hi,'<','≤'),iv(lo,hi,'≤','<')])]},
+    {label:'ج',text:'کدام نمودار، مجموعهٔ '+L('C = {x ∈ ℝ | '+fa(p)+' < x ≤ '+fa(q)+'}')+' را نشان می‌دهد؟',ins:[mk('q8_18',.5,S({l:p,r:q,lo:true,ro:false}),[S({l:p,r:q,lo:false,ro:true}),S({l:p,r:q,lo:true,ro:true}),S({l:p,r:q,lo:false,ro:false}),S({l:p,r:q-1,lo:true,ro:false})])]}]};
+}
+function q9(){
+  const nm={N:'ℕ',W:'W',Z:'ℤ',Q:'ℚ',R:'ℝ',P:'ℚ′'},rk=['N','W','Z','Q','R'],keys=Object.keys(nm),items=[],seen=new Set();
+  while(items.length<4){
+    const a=pick(keys),b=pick(keys),u=rnd()<.5;
+    if(a==b||seen.has(a+b+u)||seen.has(b+a+u))continue;
+    let r;
+    if(a!='P'&&b!='P'){const i=rk.indexOf(a),j=rk.indexOf(b);r=rk[u?Math.max(i,j):Math.min(i,j)]}
+    else{const x=a=='P'?b:a;if(u){if(x=='Q'||x=='R')r='R';else continue}else r=x=='R'?'P':'E'}
+    seen.add(a+b+u);items.push({a,b,u,r});
+  }
+  const pool=[...Object.values(nm),'∅'].map(T);
+  return{n:9,score:1,prompt:'طرف دوم تساوی‌های زیر را کامل کنید:',blocks:items.map((o,i)=>({label:LB[i],text:L(nm[o.a]+(o.u?' ∪ ':' ∩ ')+nm[o.b]+' = ......'),ltr:true,
+    ins:[mk('q9_'+(19+i),.25,T(o.r=='E'?'∅':nm[o.r]),sh(pool))]}))};
+}
+function q10(){
+  const k=R(2,5),c=1-k,f=c=>c==1?'b':c==-1?'−b':fa(c)+'b';
+  return{n:10,score:1,prompt:'اگر '+L('b > ۰')+' باشد، حاصل '+L('|b| − '+fa(k)+'b')+' کدام است؟',blocks:[{ins:[mk('q10_23',1,T(L(f(c))),[k-1,-(k+1),k+1,-k,k].map(x=>T(L(f(x)))))]}]};
+}
+function q11(){
+  let p,q,r;do{p=R(4,12);q=R(2,3);r=nsq(2,11)}while(Math.abs(p-q*Math.sqrt(r))<.4);
+  const qr=fa(q)+rad(r),A1=fa(p)+' − '+qr,A2=qr+' − '+fa(p);
+  const a=nsq(2,20);let b;do b=nsq(2,20);while(b==a);
+  const s=Math.min(a,b),l=Math.max(a,b);
+  return{n:11,score:2,prompt:'عبارت‌های زیر را بدون استفاده از قدرمطلق بنویسید و گزینهٔ درست را انتخاب کنید:',blocks:[
+    {label:'الف',text:L('|'+fa(p)+' − '+qr+'|'),ltr:true,ins:[mk('q11_24',1,T(L(p>q*Math.sqrt(r)?A1:A2)),[T(L(p>q*Math.sqrt(r)?A2:A1)),T(L(qr+' + '+fa(p))),T(L('−'+fa(p)+' − '+qr))])]},
+    {label:'ب',text:L('|'+rad(a)+' − '+rad(b)+'|'),ltr:true,ins:[mk('q11_25',1,T(L(rad(l)+' − '+rad(s))),[T(L(rad(s)+' − '+rad(l))),T(L(rad(l-s))),T(L(rad(a)+' + '+rad(b))),T(L(rad(l)+' − '+rad(s)+' − ۱'))])]}]};
+}
+function q12(){
+  const part=(id,swap)=>{
+    let p,r;do{p=R(2,8);r=nsq(3,30)}while(Math.abs(p-Math.sqrt(r))<.3);
+    const A=fa(p)+' − '+rad(r),B=rad(r)+' − '+fa(p),good=p>Math.sqrt(r)?A:B,bad=p>Math.sqrt(r)?B:A;
+    return mk(id,1,T(L(good)),[T(L(bad)),T(L('−'+fa(p)+' − '+rad(r))),T(L('−'+fa(p))),T(L(fa(p)+' + '+rad(r)))]);
+  };
+  let p1,r1,p2,r2;
+  const mkExpr=(swap)=>{let p,r;do{p=R(2,8);r=nsq(3,30)}while(Math.abs(p-Math.sqrt(r))<.3);return{p,r,e:swap?rad(r)+' − '+fa(p):fa(p)+' − '+rad(r)}};
+  const part2=(id,swap)=>{const {p,r,e}=mkExpr(swap),A=fa(p)+' − '+rad(r),B=rad(r)+' − '+fa(p),ok=p>Math.sqrt(r);
+    return{text:L('⟪('+e+')⟨۲⟩⟫'),ins:[mk(id,1,T(L(ok?A:B)),[T(L(ok?B:A)),T(L('−'+fa(p)+' − '+rad(r))),T(L('−'+fa(p))),T(L(fa(p)+' + '+rad(r)))])]}};
+  const x=part2('q12_26',false),y=part2('q12_27',true);
+  return{n:12,score:2,prompt:'حاصل عبارت‌های زیر را به‌دست آورید و گزینهٔ درست را انتخاب کنید:',blocks:[{label:'الف',ltr:true,...x},{label:'ب',ltr:true,...y}]};
+}
+function build(seed){rnd=mulberry(seed);const qs=sh([q1(),q2(),q3(),q4(),q5(),q6(),q7(),q8(),q9(),q10(),q11(),q12()]);qs.forEach((q,i)=>q.n=i+1);return{total:20,qs}}
+
+/* ---------- UI ---------- */
+const $=id=>document.getElementById(id);
+const DUR=50*60,LSK='eexam_rand_v1';
+let EXAM=null,tm=null,state={name:'',a:{},seed:0,start:0,leaves:0,done:null};
+try{Object.assign(state,JSON.parse(localStorage.getItem(LSK)||'{}'))}catch(e){}
+if(location.hash==='#reset'){try{localStorage.removeItem(LSK)}catch(e){}state={name:'',a:{},seed:0,start:0,leaves:0,done:null};history.replaceState(null,'',location.pathname+location.search)}
+const save=()=>{try{localStorage.setItem(LSK,JSON.stringify(state))}catch(e){}};
+function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;clearTimeout(t._h);t._h=setTimeout(()=>t.style.opacity=0,1800)}
+function optsHTML(sp){
+  const big=sp.opts.some(o=>o.s);
+  return `<div class="opts${big?' big':''}">`+sp.opts.map((o,i)=>`<label class="opt"><input type="radio" name="${sp.id}" value="${i}"><span class="num">${fa(i+1)}</span><span class="oc">${o.s?o.s:richText(o.t)}</span></label>`).join('')+'</div>';
+}
+function blockHTML(b){
+  const lab=b.label?`<span class="bl">${b.label})</span>`:'';
+  const lines=(b.lines||[]).map(l=>`<div class="ln"><span class="bl">${l.label})</span><span class="lt">${richText(l.text)}</span></div>`).join('');
+  const txt=b.text?`<div class="bt${b.ltr?' ltr':''}">${lab}<span>${richText(b.text)}</span></div>`:'';
+  return `<div class="blk">${lines?`<div class="lns">${lines}</div>`:''}${txt}${b.svg?`<div class="dg">${b.svg}</div>`:''}${b.ins.map(optsHTML).join('')}</div>`;
+}
+function render(){
+  $('list').innerHTML=EXAM.qs.map(q=>`<div class="qcard"><div class="qh"><b>سؤال ${fa(q.n)}</b><span class="sc">نمره: ${fa(String(q.score).replace('.','/'))}</span></div><div class="qb"><div class="qp">${richText(q.prompt)}</div>${q.expression?`<div class="qe">${escapeHtml(q.expression)}</div>`:''}${q.svg?`<div class="dg">${q.svg}</div>`:''}${q.blocks.map(blockHTML).join('')}</div></div>`).join('');
+  document.querySelectorAll('input[type=radio]').forEach(r=>{r.checked=(state.a[r.name]===r.value)});
+  updateProg();
+}
+function counts(){let n=0,t=0;EXAM.qs.forEach(q=>q.blocks.forEach(b=>b.ins.forEach(sp=>{t++;if(state.a[sp.id]!==undefined)n++})));return[n,t]}
+function updateProg(){const[n,t]=counts();$('prog').textContent='پاسخ‌داده‌شده: '+fa(n)+' از '+fa(t)}
+function grade(){let s=0;EXAM.qs.forEach(q=>q.blocks.forEach(b=>b.ins.forEach(sp=>{if(state.a[sp.id]===sp.ans)s+=sp.w})));return Math.round(s*4)/4}
+$('list').addEventListener('change',e=>{const r=e.target;if(r.type==='radio'){state.a[r.name]=r.value;save();updateProg()}});
+const fmt=x=>fa(String(x).replace('.','/'));
+
+function setWM(txt){
+  const t=escapeHtml(txt==null?state.name:txt);
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="320" height="190"><text x="20" y="100" transform="rotate(-20 160 95)" fill="rgba(0,0,0,0.08)" font-size="17" font-family="Tahoma,sans-serif">'+t+'</text></svg>';
+  const w=$('wm');w.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';w.style.display='block';
+}
+function begin(){
+  EXAM=build(state.seed);
+  $('intro').style.display='none';$('exam').style.display='block';
+  render();setWM();tick();tm=setInterval(tick,1000);
+}
+function tick(){
+  const left=DUR-Math.floor((Date.now()-state.start)/1000);
+  if(left<=0){finish(true);return}
+  const m=Math.floor(left/60),s=left%60;
+  $('timer').textContent=fa(String(m).padStart(2,'0'))+':'+fa(String(s).padStart(2,'0'));
+  $('timer').classList.toggle('low',left<300);
+}
+function finish(auto){
+  clearInterval(tm);
+  state.done={score:grade(),name:(state.name||'').trim(),when:new Date().toLocaleString('fa-IR'),auto:!!auto};
+  save();showResult();window.scrollTo(0,0);
+}
+function showResult(){
+  const d=state.done;$('intro').style.display='none';$('exam').style.display='none';$('result').style.display='block';setWM((d.name||'')+' — '+(d.when||''));
+  $('rname').textContent=d.name||'';$('rscore').textContent=fmt(d.score);$('rof').textContent='از '+fa(20);
+  $('rdate').textContent=(d.when||'')+(d.auto?' — پایان زمان':'');
+}
+$('name').value=state.name||'';
+$('name').addEventListener('input',e=>{state.name=e.target.value;save()});
+$('startBtn').addEventListener('click',()=>{
+  if(!(state.name||'').trim()){toast('ابتدا نام و نام‌خانوادگی را بنویسید');$('name').focus();return}
+  if(!confirm('با شروع آزمون، تایمر ۵۰ دقیقه‌ای آغاز می‌شود. شروع شود؟'))return;
+  state.seed=(Math.random()*4294967296)>>>0;state.start=Date.now();state.a={};state.leaves=0;save();begin();
+});
+$('submitBtn').addEventListener('click',()=>{
+  const[n,t]=counts();
+  if(!confirm((n<t?('هنوز '+fa(t-n)+' سؤال را پاسخ نداده‌اید.\n'):'')+'پس از ثبت نهایی، پاسخ‌ها قابل تغییر نیست. ثبت شود؟'))return;
+  finish(false);
+});
+$('copyBtn').addEventListener('click',()=>{
+  const d=state.done,txt='نام: '+d.name+'\nنمره: '+fmt(d.score)+' از '+fa(20)+'\nخروج از صفحه: '+fa(state.leaves)+' بار\n'+(d.when||'');
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('کپی شد')).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('کپی شد')}catch(e){}ta.remove()});
+});
+
+/* ---------- deterrents: copy / print / screenshot / leaving the page ---------- */
+const active=()=>state.start&&!state.done;
+const cover=on=>document.body.classList.toggle('cv',!!on);
+const stop=e=>e.preventDefault();
+['contextmenu','copy','cut','dragstart'].forEach(t=>document.addEventListener(t,stop));
+document.addEventListener('keydown',e=>{
+  const k=(e.key||'').toLowerCase(),c=e.ctrlKey||e.metaKey;
+  if(k==='f12'||(c&&['c','x','a','s','p','u','i','j'].includes(k))||(e.metaKey&&e.shiftKey&&['3','4','5'].includes(k))){e.preventDefault();cover(1);setTimeout(()=>{if(document.hasFocus())cover(0)},1200)}
+});
+document.addEventListener('keyup',e=>{
+  if(e.key==='PrintScreen'){try{navigator.clipboard.writeText(' ')}catch(_){}cover(1);setTimeout(()=>cover(0),1500)}
+});
+function leave(){if(active()){state.leaves++;save();cover(1)}}
+document.addEventListener('visibilitychange',()=>{document.hidden?leave():cover(0)});
+window.addEventListener('blur',leave);
+window.addEventListener('focus',()=>cover(0));
+
+/* ---------- start-up ---------- */
+if(state.done)showResult();else if(state.start)begin();
+</script>
+</body>
+</html>
